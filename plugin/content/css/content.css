@@ -1,0 +1,27 @@
+body.is-one-big-json.jp-dark-theme {
+    background-color: #292929;
+    margin: 0;
+    padding: 0;
+}
+
+.jp-top-bar {
+    position: relative;
+    padding: 5px;
+}
+
+.jp-dark-theme .jp-top-bar {
+    background-color: #515557;
+    border-bottom: 1px solid black;
+}
+
+.jp-top-bar-logo {
+    width: 30px;
+}
+
+.jp-json-caret {
+    font-size: 14px;
+}
+
+.jp-dark-theme .jp-json-caret {
+    color: white;
+}

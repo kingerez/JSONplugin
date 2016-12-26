@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+
+  "name": "JSON plugin",
+  "description": "View and edit JSON objects in your browser",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "images/icon.png",
+    "default_popup": "popup/popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/js/helpers.js", "content/js/jsonParser.js", "content/js/singlePageJSON.js", "content/js/content.js"],
+      "css": ["content/css/content.css", "content/css/font-awesome.min.css"]
+    }
+  ],
+
+  "permissions": [
+    "activeTab", "tabs"
+  ],
+
+  "web_accessible_resources": ["images/icon.png", "content/fonts/fontawesome-webfont.woff", "content/fonts/fontawesome-webfont.woff2", "content/fonts/fontawesome-webfont.ttf",
+                               "content/fonts/fontawesome-webfont.eot", "content/fonts/fontawesome-webfont.svg"]
+}
