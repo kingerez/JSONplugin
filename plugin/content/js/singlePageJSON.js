@@ -41,38 +41,54 @@ const singlePageJSON = (() => {
         container.innerHTML = template;
     }
 
-    function renderNode(key, value) {
+    function jsonToHtml(key, value) {
         const valueType = helpers.getType(value);
         const valueClass = 'jp-json-type-' + valueType;
 
-        const el = document.createElement('div');
-        el.className = 'jp-json-node ' + valueClass;
-        el.innerHTML = `
-            <i class="fa fa-caret-right jp-json-caret jp-json-caret-closed"></i>
-        `;
+        let typeName = helpers.getTypeName(valueType);
+        let separator = key !== null ? ':&nbsp;' : '';
 
-        return el;
-    }
+        let content;
 
-    function jsonToHtml(key, value) {
-        if(!value && key !== undefined) {
-            value = key;
-            key = undefined;
+        key = key || '';
+
+        switch (valueType) {
+            case 'object':
+            case 'array':
+                if(valueType === 'array') {
+                    typeName += '[' + value.length + ']';
+                }
+
+                content = `
+                    <i class="fa fa-caret-down jp-json-caret"></i>
+                    <span class="jp-object-name jp-reg-text">${ key }</span>
+                    <span class="jp-object-name-separator jp-reg-text">${ separator }</span>
+                    <span class="jp-object-type jp-reg-text">${ typeName }</span>
+                    <ol class="jp-ol jp-object-children">`;
+                    for(let v in value) {
+                        content += jsonToHtml(v, value[v]);
+                    }
+                    content += `</ol>`;
+                break;
+
+            default:
+                content = `
+                    <i class="fa fa-caret-down jp-json-transparent-caret"></i>
+                    <span class="jp-var-name jp-reg-text">${ key }</span>
+                    <span class="jp-var-name-separator jp-reg-text">:&nbsp;</span>
+                    <span class="jp-var-value jp-reg-text">${ value }</span>
+                `;
+                break;
         }
 
-        const valueType = helpers.getType(value);
-        const valueClass = 'jp-json-type-' + valueType;
-        const typeName = helpers.getTypeName(valueType);
-        
+        let template = `<li class="jp-class-${ valueType }">${ content }</li>`;
 
-        // const el = document.createElement('div');
-        // el.className = 'jp-json-object';
-        // el.appendChild(renderNode(key, value));
-        // return el;
+        return template;
     }
     
     return {
         renderPage: function (jsonObject) {
+            console.log(jsonObject)
             document.body.classList.add('is-one-big-json');
             renderFonts();
 
@@ -85,8 +101,14 @@ const singlePageJSON = (() => {
             }
 
             createContainer();
+
             const jsonHtml = jsonToHtml(null, jsonObject);
-            container.querySelector('.jp-body').appendChild(jsonHtml);
+
+            container.querySelector('.jp-body').innerHTML = `
+                <ol class="jp-ol jp-parent-object">
+                    ${ jsonHtml }
+                </ol>
+            `
         }
     };
 

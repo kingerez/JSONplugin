@@ -18,10 +18,52 @@ body.is-one-big-json.jp-dark-theme {
     width: 30px;
 }
 
+.jp-body {
+    cursor: default;
+    padding: 10px;
+}
+
+.jp-ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 .jp-json-caret {
     font-size: 14px;
+    margin-right: 5px;
 }
 
 .jp-dark-theme .jp-json-caret {
+    color: #f0f0f0;
+}
+
+.jp-object-children {
+    padding-left: 10px;
+}
+
+.jp-json-transparent-caret {
+    color: transparent;
+}
+
+.jp-reg-text {
+    font-size: 14px;
+    font-weight: normal;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.jp-dark-theme .jp-object-name {
     color: white;
+}
+
+.jp-dark-theme .jp-class-number {
+    color: green;
+}
+
+.jp-dark-theme .jp-class-string {
+    color: yellow;
+}
+
+.jp-dark-theme .jp-class-boolean {
+    color: pink;
 }
