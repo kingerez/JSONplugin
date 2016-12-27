@@ -2,8 +2,8 @@ function parseJson(str) {
     const results = [];
 
     let endOfString = false;
-    let maxAttempts = 20;
     let index = 0;
+    
     do {
         let result = traverseString(str, index);
         if(result) {
@@ -13,12 +13,6 @@ function parseJson(str) {
             } else {
                 index = result.startIndex + 1;
             }
-        }
-
-        maxAttempts--;
-        if(maxAttempts === 0) {
-            console.log('shit');
-            break;
         }
     } while (!endOfString && index < str.length && index !== -1);
 

@@ -10,9 +10,9 @@
         const bodyJSON = JSON.parse(bodyText);
 
         // it's all JSON, baby!
-        singlePageJSON.renderPage(bodyJSON);
+        singlePageJSON.renderPage(bodyText);
     } catch (e) {
-        // There's text in the body that's not JSON
+        // The text in the body isn't a valid JSON
     }
 
 })();

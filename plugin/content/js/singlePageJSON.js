@@ -1,6 +1,16 @@
 const singlePageJSON = (() => {
 
     let container;
+    let jsonHtml;
+    
+    function toggleOriginalView() {
+        const isOriginal = document.body.className.indexOf('jp-hide-original') < 0;
+        if(isOriginal) {
+            document.body.classList.add('jp-hide-original');
+        } else {
+            document.body.classList.remove('jp-hide-original');
+        }
+    }
 
     function renderFonts() {
         const style = document.createElement('style');
@@ -31,84 +41,58 @@ const singlePageJSON = (() => {
         container.className = 'jp-json-container';
         document.body.appendChild(container);
 
+        const toggleBtn = document.createElement('button');
+        toggleBtn.textContent = 'View JSON';
+        toggleBtn.className = 'toggle-json';
+        toggleBtn.onclick = function () {
+            document.body.classList.add('jp-hide-original');
+        };
+        const firstChild = document.body.children[0];
+        document.body.insertBefore(toggleBtn, firstChild);
+
         const template = `
             <div class="jp-top-bar">
                 <img class="jp-top-bar-logo" src="${ chrome.extension.getURL('images/icon.png') }" />
+                <button class="jp-top-button jp-collapse-all-btn">Collapse all</button>
+                <button class="jp-top-button jp-expand-all-btn">Expand all</button>
+                <button class="jp-top-button jp-origin-btn">View original</button>
+                <div style="clear: both;"></div>
             </div>
-            <div class="jp-body"></div>
+            <div class="jp-body jp-noselect"></div>
         `;
 
         container.innerHTML = template;
+
+        container.querySelector('.jp-collapse-all-btn').addEventListener('click', () => {
+            jsonHtml.collapseAll(container.querySelector('.jp-body'));
+        });
+
+        container.querySelector('.jp-expand-all-btn').addEventListener('click', () => {
+            jsonHtml.expandAll(container.querySelector('.jp-body'));
+        });
+
+        container.querySelector('.jp-origin-btn').addEventListener('click', () => {
+            toggleOriginalView();
+        });
     }
 
-    function jsonToHtml(key, value) {
-        const valueType = helpers.getType(value);
-        const valueClass = 'jp-json-type-' + valueType;
-
-        let typeName = helpers.getTypeName(valueType);
-        let separator = key !== null ? ':&nbsp;' : '';
-
-        let content;
-
-        key = key || '';
-
-        switch (valueType) {
-            case 'object':
-            case 'array':
-                if(valueType === 'array') {
-                    typeName += '[' + value.length + ']';
-                }
-
-                content = `
-                    <i class="fa fa-caret-down jp-json-caret"></i>
-                    <span class="jp-object-name jp-reg-text">${ key }</span>
-                    <span class="jp-object-name-separator jp-reg-text">${ separator }</span>
-                    <span class="jp-object-type jp-reg-text">${ typeName }</span>
-                    <ol class="jp-ol jp-object-children">`;
-                    for(let v in value) {
-                        content += jsonToHtml(v, value[v]);
-                    }
-                    content += `</ol>`;
-                break;
-
-            default:
-                content = `
-                    <i class="fa fa-caret-down jp-json-transparent-caret"></i>
-                    <span class="jp-var-name jp-reg-text">${ key }</span>
-                    <span class="jp-var-name-separator jp-reg-text">:&nbsp;</span>
-                    <span class="jp-var-value jp-reg-text">${ value }</span>
-                `;
-                break;
-        }
-
-        let template = `<li class="jp-class-${ valueType }">${ content }</li>`;
-
-        return template;
-    }
-    
     return {
         renderPage: function (jsonObject) {
-            console.log(jsonObject)
             document.body.classList.add('is-one-big-json');
+            document.body.classList.add('jp-hide-original');
             renderFonts();
 
             const numElements = document.body.childElementCount;
             for(let i=0; i<numElements; i++) {
                 const el = document.body.children[i];
-                const currentDisplayValue = getComputedStyle(el).display;
-                el.setAttribute('data-old-display', currentDisplayValue);
-                el.style.display = 'none';
+                el.classList.add('jp-original-element');
             }
 
             createContainer();
 
-            const jsonHtml = jsonToHtml(null, jsonObject);
+            jsonHtml = new JSONtoHTML(jsonObject);
 
-            container.querySelector('.jp-body').innerHTML = `
-                <ol class="jp-ol jp-parent-object">
-                    ${ jsonHtml }
-                </ol>
-            `
+            container.querySelector('.jp-body').appendChild(jsonHtml.root);
         }
     };
 

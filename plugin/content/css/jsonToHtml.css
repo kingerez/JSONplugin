@@ -1,0 +1,109 @@
+.jp-ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.jp-json-caret {
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.jp-dark-theme .jp-json-caret {
+    color: #959595;
+}
+
+.jp-object-children {
+    padding-left: 15px;
+}
+
+.jp-json-transparent-caret {
+    color: transparent;
+}
+
+.jp-reg-text {
+    font-size: 14px;
+    font-weight: normal;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.jp-dark-theme .jp-object-type {
+    color: white;
+}
+
+.jp-dark-theme .jp-object-name {
+    color: white;
+}
+
+.jp-dark-theme .jp-class-object .jp-object-name {
+    color: #FF6EEC;
+}
+
+.jp-dark-theme .jp-class-array .jp-object-name {
+    color: #FF6EEC;
+}
+
+.jp-dark-theme .jp-class-number {
+    color: #FF6EEC;
+}
+
+.jp-dark-theme .jp-class-string {
+    color: #FF6EEC;
+}
+
+.jp-dark-theme .jp-class-boolean {
+    color: #FF6EEC;
+}
+
+.jp-dark-theme .jp-object-name-separator {
+    color: white;
+}
+
+.jp-dark-theme .jp-var-name-separator {
+    color: white;
+}
+
+.jp-dark-theme .jp-class-string .jp-var-value {
+    color: #E93F3B;
+}
+
+.jp-dark-theme .jp-class-number .jp-var-value {
+    color: #9980ff;
+}
+
+.jp-dark-theme .jp-class-boolean .jp-var-value {
+    color: #a1f7b5;
+}
+
+.jp-parent-node {
+    padding-left: 13px;
+}
+
+.jp-tree-li {
+    padding-left: 4px;
+    line-height: 18px;
+}
+
+.jp-tree-li.jp-parent-node {
+    padding-left: 3px;
+}
+
+.jp-tree-li.jp-parent-node i.fa-caret-right {
+    margin-right: 8px;
+}
+
+.jp-closed-node {
+    display: none;
+}
+
+.jp-inline-icon-btn {
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    display: none !important;
+    margin-left: 10px;
+}
+
+li.jp-tree-li:hover i.jp-inline-icon-btn {
+    display: inline-block !important;
+}
