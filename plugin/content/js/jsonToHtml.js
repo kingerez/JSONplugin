@@ -1,4 +1,6 @@
-class JSONtoHTML {
+import { helpers } from './helpers';
+
+export class JSONtoHTML {
 
     convertJsonToHtml(key, value) {
         const valueType = helpers.getType(value);

@@ -1,0 +1,41 @@
+.popup-top {
+    background-color: #333;
+    padding: 10px;
+    border-bottom: 1px solid black;
+    box-shadow: 1px 3px 5px rgba(0,0,0, 0.3);
+}
+
+.plugin-icon {
+    width: 30px;
+    float: left;
+}
+
+.base-button {
+    padding: 10px 15px;
+    font-family: Roboto, Helvetica, Arial;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.slide {
+    width: 100%;
+    transition: all 500ms;
+}
+
+.show-slide-0 .slide {
+    opacity: 1;
+}
+
+.show-slide-1 .slide {
+    transform: translateX(-100%);
+}
+
+.show-slide-1 .slide0 {
+    opacity: 0;
+}
+
+.show-slide-1 .slide1 {
+    opacity: 1;
+}
+

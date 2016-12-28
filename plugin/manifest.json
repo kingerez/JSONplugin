@@ -13,8 +13,9 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/js/helpers.js", "content/js/jsonParser.js", "content/js/jsonToHtml.js", "content/js/singlePageJSON.js", "content/js/content.js"],
-      "css": ["content/css/content.css", "content/css/jsonToHtml.css", "content/css/font-awesome.min.css"]
+      "js": ["content/compiled/bundle.js"]
+      /*"js": ["content/js/helpers.js", "content/js/jsonParser.js", "content/js/jsonToHtml.js", "content/js/singlePageJSON.js", "content/js/content.js"],
+      "css": ["content/css/content.css", "content/css/jsonToHtml.css", "assets/css/font-awesome.min.css"]*/
     }
   ],
 
@@ -22,6 +23,6 @@
     "activeTab", "tabs"
   ],
 
-  "web_accessible_resources": ["images/icon.png", "content/fonts/fontawesome-webfont.woff", "content/fonts/fontawesome-webfont.woff2", "content/fonts/fontawesome-webfont.ttf",
-                               "content/fonts/fontawesome-webfont.eot", "content/fonts/fontawesome-webfont.svg"]
+  "web_accessible_resources": ["images/icon.png", "assets/fonts/fontawesome-webfont.woff", "assets/fonts/fontawesome-webfont.woff2", "assets/fonts/fontawesome-webfont.ttf",
+                               "assets/fonts/fontawesome-webfont.eot", "assets/fonts/fontawesome-webfont.svg"]
 }

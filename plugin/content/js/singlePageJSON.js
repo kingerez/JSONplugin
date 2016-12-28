@@ -1,4 +1,7 @@
-const singlePageJSON = (() => {
+import { helpers } from './helpers';
+import { JSONtoHTML } from './jsonToHtml';
+
+export const singlePageJSON = (() => {
 
     let container;
     let jsonHtml;
@@ -15,11 +18,11 @@ const singlePageJSON = (() => {
     function renderFonts() {
         const style = document.createElement('style');
 
-        const eot = chrome.extension.getURL('content/fonts/fontawesome-webfont.eot?v=4.7.0');
-        const woff2 = chrome.extension.getURL('content/fonts/fontawesome-webfont.woff2');
-        const woff = chrome.extension.getURL('content/fonts/fontawesome-webfont.woff');
-        const ttf = chrome.extension.getURL('content/fonts/fontawesome-webfont.ttf');
-        const svg = chrome.extension.getURL('content/fonts/fontawesome-webfont.svg');
+        const eot = chrome.extension.getURL('assets/fonts/fontawesome-webfont.eot?v=4.7.0');
+        const woff2 = chrome.extension.getURL('assets/fonts/fontawesome-webfont.woff2');
+        const woff = chrome.extension.getURL('assets/fonts/fontawesome-webfont.woff');
+        const ttf = chrome.extension.getURL('assets/fonts/fontawesome-webfont.ttf');
+        const svg = chrome.extension.getURL('assets/fonts/fontawesome-webfont.svg');
 
         style.innerText = `
             @font-face{

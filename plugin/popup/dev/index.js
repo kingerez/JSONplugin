@@ -1,6 +1,13 @@
 require('angular');
 require('./css/index.css');
+require('../../assets/css/font-awesome.min.css');
 
-angular.module('jsonplugin', []);
+import { mainComponent } from './js/mainComponent';
+import { jsonParserComponent } from './js/jsonParserComponent';
+import { jsonViewComponent } from './js/jsonViewComponent';
 
-console.log(angular);
+
+angular.module('jsonplugin', [])
+    .component('jsonParser', jsonParserComponent)
+    .component('jsonView', jsonViewComponent)
+    .component('main', mainComponent);

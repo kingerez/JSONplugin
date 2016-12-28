@@ -1,4 +1,4 @@
-function parseJson(str) {
+export function parseJson(str) {
     const results = [];
 
     let endOfString = false;

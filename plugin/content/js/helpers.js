@@ -1,4 +1,4 @@
-const helpers = {
+export const helpers = {
 
     getType(obj) {
         if(obj.constructor == Array)
