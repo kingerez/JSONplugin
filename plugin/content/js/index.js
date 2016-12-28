@@ -1,5 +1,4 @@
 require('../css/content.css');
-require('../css/jsonToHtml.css');
 require('../../assets/css/font-awesome.min.css');
 
 import { singlePageJSON } from './singlePageJSON';

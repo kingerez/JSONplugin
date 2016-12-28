@@ -4,13 +4,15 @@ export const jsonViewComponent = {
 
     controller: class {
 
-        constructor($scope) {
+        constructor($scope, $element) {
 
             this.jsonHtml = undefined;
 
             $scope.$watch(() => this.jsonText, () => {
                 if(this.jsonText && this.jsonText !== '') {
                     this.jsonHtml = new JSONtoHTML(this.jsonText);
+                    console.log(this.jsonHtml.root);
+                    $element[0].querySelector('.json-to-html').appendChild(this.jsonHtml.root);
                 }
             });
 
@@ -22,8 +24,8 @@ export const jsonViewComponent = {
         jsonText: '@'
     },
 
-    template: `<div class="json-viewer">
-
+    template: `<div class="json-viewer jp-dark-theme">
+        <div class="json-to-html"></div>
     </div>`
 
 };

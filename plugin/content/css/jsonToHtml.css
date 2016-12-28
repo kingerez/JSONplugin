@@ -7,6 +7,7 @@
 .jp-json-caret {
     font-size: 14px;
     margin-right: 5px;
+    vertical-align: top;
 }
 
 .jp-dark-theme .jp-json-caret {
@@ -22,9 +23,16 @@
 }
 
 .jp-reg-text {
-    font-size: 14px;
+    display: inline-block;
+    font-size: 1em;
     font-weight: normal;
     font-family: Helvetica, Arial, sans-serif;
+    line-height: 0.93em;
+    max-width: 40vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-bottom: 1px;
 }
 
 .jp-dark-theme .jp-object-type {
@@ -80,6 +88,7 @@
 }
 
 .jp-tree-li {
+    position: relative;
     padding-left: 4px;
     line-height: 18px;
 }
@@ -97,11 +106,12 @@
 }
 
 .jp-inline-icon-btn {
-    font-size: 14px;
+    font-size: 1em;
     color: white;
     cursor: pointer;
     display: none !important;
     margin-left: 10px;
+    vertical-align: top;
 }
 
 li.jp-tree-li:hover i.jp-inline-icon-btn {

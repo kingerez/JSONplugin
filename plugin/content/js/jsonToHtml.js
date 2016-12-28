@@ -1,4 +1,7 @@
+require('../css/jsonToHtml.css');
+
 import { helpers } from './helpers';
+import { JsonEditor } from './jsonEditor';
 
 export class JSONtoHTML {
 
@@ -43,17 +46,11 @@ export class JSONtoHTML {
         let relationClass = (valueType === 'array' || valueType === 'object') ? 'jp-parent-node' : '';
         let deleteBtn = `<i class="fa fa-trash-o jp-inline-icon-btn jp-delete-btn"></i>`;
         let copyBtn = `<i class="fa fa-copy jp-inline-icon-btn jp-copy-btn"></i>`;
-        let template = `<li data-path-key="${ key }" class="jp-tree-li jp-class-${ valueType } ${ relationClass }">${ content }${ copyBtn }${ deleteBtn }</li>`;
+        let editBtn = `<i class="fa fa-edit jp-inline-icon-btn jp-edit-btn"></i>`;
+        let template = `<li data-path-key="${ key }" class="jp-tree-li jp-class-${ valueType } ${ relationClass }">${ content }${ copyBtn }${ deleteBtn }${ editBtn }</li>`;
         if(child) template += child;
 
         return template;
-    }
-
-    removeJsonEvents(root) {
-        root = root || this.root;
-        root.querySelectorAll('.jp-parent-node').forEach((el) => {
-            console.log()
-        });
     }
 
     attachJsonEvents(root) {
@@ -148,6 +145,40 @@ export class JSONtoHTML {
                 helpers.copyTextToClipboard(value);
             });
         });
+
+        this.root.querySelectorAll('.jp-edit-btn').forEach((el) => {
+            if(el.getAttribute('jp-click')) return;
+            el.setAttribute('jp-click', true);
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const parent = el.parentNode;
+                const isObject = parent.className.indexOf('jp-parent-node') >= 0;
+                const isRoot = parent.className.indexOf('jp-json-root') >= 0;
+                const varName = (parent.querySelector('.jp-var-name') || parent.querySelector('.jp-object-name')).innerText;
+
+                let value;
+
+                if(isRoot) {
+                    value = this.json;
+                } else {
+                    if(isObject) {
+                        const path = this.getPathToElement(parent);
+                        value = this.getValueFromPath(path);
+                    } else {
+                        value = parent.querySelector('.jp-var-value').textContent;
+                    }
+                }
+
+                this.editor.editObject(varName, value)
+                    .then((e) => {
+
+                    })
+                    .catch((e) => {
+
+                    });
+            });
+        });
     }
 
     collapseAll() {
@@ -215,8 +246,10 @@ export class JSONtoHTML {
             this.root.className = 'jp-ol jp-parent-object';
 
             this.root.innerHTML = this.convertJsonToHtml(null, json);
+            this.editor = new JsonEditor(this.root);
 
             this.attachJsonEvents();
+            this.root.querySelector('li.jp-parent-node').classList.add('jp-json-root');
         } catch (e) {
             console.error('Could not parse json: ', e);
         }

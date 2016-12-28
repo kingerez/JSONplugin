@@ -1,0 +1,95 @@
+.jp-json-editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0, 0.5);
+}
+
+.jp-json-editor-inner {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    width: 90vh;
+    max-width: 90%;
+    background-color: #292929;
+    transform: translateX(-50%);
+    color: white;
+    padding: 25px 10px 10px 10px;
+    border: 1px solid #333;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+.jp-close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 15px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+
+.jp-editor-input {
+    display: inline-block;
+    vertical-align: top;
+    border: black;
+    background-color: #222;
+    font-family: Roboto, Helvetica, Arial;
+    font-size: 1em;
+    color: white;
+    padding: 5px 10px;
+    box-shadow: inset 2px 2px 3px rgba(0,0,0,0.3);
+    resize: none;
+    outline: none;
+    cursor: text;
+    box-sizing: border-box;
+}
+
+.jp-editor-input-key {
+    width: 100px;
+}
+
+.jp-editor-input-key.jp-disabled {
+    cursor: not-allowed;
+}
+
+.jp-editor-separator {
+    display: inline-block;
+    margin: 0 5px;
+    vertical-align: top;
+    font-size: 20px;
+    font-family: Roboto, Helvetica, Arial;
+}
+
+.jp-editor-input-value {
+    display: inline-block;
+    min-height: 24px;
+    max-height: 400px;
+}
+
+.jp-editor-closed {
+    display: none;
+}
+
+.jp-editor-rendering .jp-json-editor-inner {
+    opacity: 0;
+}
+
+.jp-editor-done-btn {
+    float: right;
+    color: black;
+    font-size: 14px;
+    margin-top: 10px;
+    font-family: Roboto, Helvetica, Arial;
+    cursor: pointer;
+}
+
+.jp-editor-done-btn.jp-enabled {
+    color: #3CB371;
+}
+
+.jp-editor-done-btn span {
+    margin-right: 5px;
+}
