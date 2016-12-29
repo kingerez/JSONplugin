@@ -2,6 +2,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    transition: background-color 150ms;
 }
 
 .jp-json-caret {
@@ -91,6 +92,7 @@
     position: relative;
     padding-left: 4px;
     line-height: 18px;
+    transition: background-color 150ms;
 }
 
 .jp-tree-li.jp-parent-node {
@@ -114,6 +116,47 @@
     vertical-align: top;
 }
 
-li.jp-tree-li:hover i.jp-inline-icon-btn {
+li.jp-tree-li:not(.jp-is-editing):hover i.jp-inline-icon-btn:not(.jp-editor-controller) {
     display: inline-block !important;
+}
+
+.jp-is-editing .jp-copy-btn,
+.jp-is-editing .jp-delete-btn,
+.jp-is-editing .jp-edit-btn {
+    display: none !important;
+}
+
+.jp-done-editing-btn {
+    color: black;
+    display: none;
+}
+
+.jp-cancel-editing-btn {
+    color: #E93F3B;
+    display: none;
+}
+
+.jp-is-editing .jp-done-editing-btn,
+.jp-is-editing .jp-cancel-editing-btn {
+    display: inline-block !important;
+}
+
+.jp-is-valid-value .jp-done-editing-btn {
+    color: #3CB371;
+}
+
+.jp-is-editing + .jp-ol {
+    display: none;
+}
+
+.jp-is-editing > .jp-json-caret {
+    display: none;
+}
+
+.jp-dark-theme .jp-is-copying {
+    background-color: rgba(173,216,230, 0.3);
+}
+
+.jp-dark-theme .jp-is-copying + .jp-ol {
+    background-color: rgba(173,216,230, 0.3);
 }

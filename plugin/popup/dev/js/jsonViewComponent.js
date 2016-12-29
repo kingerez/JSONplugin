@@ -11,8 +11,9 @@ export const jsonViewComponent = {
             $scope.$watch(() => this.jsonText, () => {
                 if(this.jsonText && this.jsonText !== '') {
                     this.jsonHtml = new JSONtoHTML(this.jsonText);
-                    console.log(this.jsonHtml.root);
-                    $element[0].querySelector('.json-to-html').appendChild(this.jsonHtml.root);
+                    const targetElement = $element[0].querySelector('.json-to-html');
+                    targetElement.innerHTML = '';
+                    targetElement.appendChild(this.jsonHtml.root);
                 }
             });
 

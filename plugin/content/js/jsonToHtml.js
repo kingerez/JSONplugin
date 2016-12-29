@@ -14,6 +14,7 @@ export class JSONtoHTML {
         let content;
         let child;
 
+        const isRootNode = key === null;
         key = key || '';
 
         switch (valueType) {
@@ -44,10 +45,12 @@ export class JSONtoHTML {
         }
 
         let relationClass = (valueType === 'array' || valueType === 'object') ? 'jp-parent-node' : '';
-        let deleteBtn = `<i class="fa fa-trash-o jp-inline-icon-btn jp-delete-btn"></i>`;
+        let deleteBtn = isRootNode ? '' : `<i class="fa fa-trash-o jp-inline-icon-btn jp-delete-btn"></i>`;
         let copyBtn = `<i class="fa fa-copy jp-inline-icon-btn jp-copy-btn"></i>`;
         let editBtn = `<i class="fa fa-edit jp-inline-icon-btn jp-edit-btn"></i>`;
-        let template = `<li data-path-key="${ key }" class="jp-tree-li jp-class-${ valueType } ${ relationClass }">${ content }${ copyBtn }${ deleteBtn }${ editBtn }</li>`;
+        let doneBtn = `<i class="fa fa-check jp-inline-icon-btn jp-editor-controller jp-done-editing-btn"></i>`;
+        let cancelBtn = `<i class="fa fa-close jp-inline-icon-btn jp-editor-controller jp-cancel-editing-btn"></i>`
+        let template = `<li data-path-key="${ key }" class="jp-tree-li jp-class-${ valueType } ${ relationClass }">${ content }${ copyBtn }${ deleteBtn }${ editBtn }${ doneBtn }${ cancelBtn }</li>`;
         if(child) template += child;
 
         return template;
@@ -60,6 +63,8 @@ export class JSONtoHTML {
             el.setAttribute('jp-click', true);
 
             el.addEventListener('click', () => {
+                if(this.isEditingNode) return;
+
                 const sibling = helpers.getImmediateSibling(el);
                 if(sibling) {
                     const isClosed = sibling.className.indexOf('jp-closed-node') >= 0;
@@ -82,6 +87,8 @@ export class JSONtoHTML {
             el.setAttribute('jp-click', true);
 
             el.addEventListener('click', (e) => {
+                if(this.isEditingNode) return;
+
                 e.stopPropagation();
                 const path = this.getPathToElement(el);
                 const reconstructionKey = path[path.length - 2];
@@ -125,6 +132,8 @@ export class JSONtoHTML {
             el.setAttribute('jp-click', true);
 
             el.addEventListener('click', (e) => {
+                if(this.isEditingNode) return;
+
                 e.stopPropagation();
                 const parent = el.parentNode;
                 let value;
@@ -142,6 +151,11 @@ export class JSONtoHTML {
                     }
                 }
 
+                parent.classList.add('jp-is-copying');
+                setTimeout(() => {
+                    parent.classList.remove('jp-is-copying');
+                }, 150);
+
                 helpers.copyTextToClipboard(value);
             });
         });
@@ -151,37 +165,55 @@ export class JSONtoHTML {
             el.setAttribute('jp-click', true);
 
             el.addEventListener('click', (e) => {
+                if(this.isEditingNode) return;
+
                 e.stopPropagation();
                 const parent = el.parentNode;
                 const isObject = parent.className.indexOf('jp-parent-node') >= 0;
                 const isRoot = parent.className.indexOf('jp-json-root') >= 0;
-                const varName = (parent.querySelector('.jp-var-name') || parent.querySelector('.jp-object-name')).innerText;
+                const keyElement = parent.querySelector('.jp-var-name') || parent.querySelector('.jp-object-name');
+                const varName = keyElement.innerText;
 
                 let value;
+                let valueElement;
+                let parentObject;
 
                 if(isRoot) {
                     value = this.json;
+                    valueElement = parent.querySelector('.jp-object-type');
                 } else {
+                    const path = this.getPathToElement(parent);
+                    const pathToParent = path.slice(0, path.length-1);
+                    parentObject = this.getValueFromPath(pathToParent);
+
                     if(isObject) {
-                        const path = this.getPathToElement(parent);
+                        valueElement = parent.querySelector('.jp-object-type');
                         value = this.getValueFromPath(path);
                     } else {
-                        value = parent.querySelector('.jp-var-value').textContent;
+                        valueElement = parent.querySelector('.jp-var-value');
+                        value = valueElement.textContent;
                     }
                 }
 
-                this.editor.editObject(varName, value)
-                    .then((e) => {
-
+                this.isEditingNode = true;
+                const editor = new JsonEditor(parent, parentObject);
+                editor.editObject(varName, value, keyElement, valueElement)
+                    .then((result) => {
+                        console.log(this.json);
+                        this.root.innerHTML = this.convertJsonToHtml(null, this.json);
+                        this.attachJsonEvents();
+                        this.isEditingNode = false;
                     })
-                    .catch((e) => {
-
+                    .catch(() => {
+                        console.log('cancelled');
+                        this.isEditingNode = false;
                     });
             });
         });
     }
 
     collapseAll() {
+        if(this.isEditingNode) return;
         this.root.querySelectorAll('.jp-parent-node').forEach((el) => {
             const sibling = helpers.getImmediateSibling(el);
             if(sibling) {
@@ -195,6 +227,7 @@ export class JSONtoHTML {
     }
 
     expandAll() {
+        if(this.isEditingNode) return;
         this.root.querySelectorAll('.jp-parent-node').forEach((el) => {
             const sibling = helpers.getImmediateSibling(el);
             if(sibling) {
@@ -235,6 +268,8 @@ export class JSONtoHTML {
     }
 
     constructor(json) {
+        this.isEditingNode = false;
+
         try {
             if(typeof json === 'string') {
                 json = JSON.parse(json);
@@ -246,7 +281,6 @@ export class JSONtoHTML {
             this.root.className = 'jp-ol jp-parent-object';
 
             this.root.innerHTML = this.convertJsonToHtml(null, json);
-            this.editor = new JsonEditor(this.root);
 
             this.attachJsonEvents();
             this.root.querySelector('li.jp-parent-node').classList.add('jp-json-root');
