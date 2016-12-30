@@ -1,3 +1,12 @@
+.jp-noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .popup-top {
     position: fixed;
     top: 0;
@@ -7,6 +16,7 @@
     padding: 10px;
     border-bottom: 1px solid black;
     box-shadow: 1px 3px 5px rgba(0,0,0, 0.3);
+    z-index: 100;
 }
 
 .popup-top-arrow {
@@ -22,6 +32,10 @@
 
 .popup-top-arrow.enabled {
     color: #3CB371;
+}
+
+.popup-top-arrow.enabled:hover {
+    text-shadow: 0 0 6px rgba(60,179,113,0.5);
 }
 
 .popup-top-back {

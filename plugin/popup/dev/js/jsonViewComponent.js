@@ -7,13 +7,14 @@ export const jsonViewComponent = {
         constructor($scope, $element) {
 
             this.jsonHtml = undefined;
+            this.content = $element[0].querySelector('.json-to-html');
+            this.scrollParent = $element[0].parentNode;
 
             $scope.$watch(() => this.jsonText, () => {
                 if(this.jsonText && this.jsonText !== '') {
                     this.jsonHtml = new JSONtoHTML(this.jsonText);
-                    const targetElement = $element[0].querySelector('.json-to-html');
-                    targetElement.innerHTML = '';
-                    targetElement.appendChild(this.jsonHtml.root);
+                    this.content.innerHTML = '';
+                    this.content.appendChild(this.jsonHtml.root);
                 }
             });
 
@@ -25,8 +26,9 @@ export const jsonViewComponent = {
         jsonText: '@'
     },
 
-    template: `<div class="json-viewer jp-dark-theme">
+    template: `<div class="json-viewer jp-dark-theme jp-noselect">
         <div class="json-to-html"></div>
+        <scrollbar scrollable="$ctrl.content" parent="$ctrl.scrollParent"></scrollbar>
     </div>`
 
 };

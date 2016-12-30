@@ -5,6 +5,46 @@ import { JsonEditor } from './jsonEditor';
 
 export class JSONtoHTML {
 
+    displayLinkContent(result) {
+        const contentType = result.getResponseHeader('content-type');
+
+        let content = result.responseText;
+        if(contentType.indexOf('image') === 0) {
+            content = `<img class="jp-preview-image" src="${ result.responseURL }" />`;
+        }
+
+        const el = document.createElement('div');
+        el.className = 'jp-link-preview';
+        el.innerHTML = `
+            <div class="jp-link-preview-inner">
+                <i class="fa fa-close jp-close-preview"></i>
+                <div class="jp-preview-content">${ content }</div>
+            </div>
+        `;
+
+        el.querySelector('.jp-close-preview').onclick = () => {
+            document.body.removeChild(el);
+        };
+
+        document.body.appendChild(el);
+    }
+
+    displayErrorMessage(text) {
+        const el = document.createElement('div');
+        el.className = 'jp-error-alert';
+        el.innerHTML = `<span class="jp-alert-content">${text}</span>`;
+        document.body.appendChild(el);
+        setTimeout(() => {
+            el.classList.add('jp-alert-enter');
+            setTimeout(() => {
+                el.classList.add('jp-alert-fade');
+                setTimeout(() => {
+                    document.body.removeChild(el);
+                }, 500);
+            }, 2500);
+        });
+    }
+
     convertJsonToHtml(key, value) {
         const valueType = helpers.getType(value);
 
@@ -44,13 +84,17 @@ export class JSONtoHTML {
                 break;
         }
 
+        const isUrl = helpers.isValidURL(value);
+        const urlClass = isUrl ? 'jp-url' : '';
+
         let relationClass = (valueType === 'array' || valueType === 'object') ? 'jp-parent-node' : '';
         let deleteBtn = isRootNode ? '' : `<i class="fa fa-trash-o jp-inline-icon-btn jp-delete-btn"></i>`;
         let copyBtn = `<i class="fa fa-copy jp-inline-icon-btn jp-copy-btn"></i>`;
+        let searchBtn = isUrl ? `<i class="fa fa-search jp-inline-icon-btn jp-search-btn"></i>` : '';
         let editBtn = `<i class="fa fa-edit jp-inline-icon-btn jp-edit-btn"></i>`;
         let doneBtn = `<i class="fa fa-check jp-inline-icon-btn jp-editor-controller jp-done-editing-btn"></i>`;
-        let cancelBtn = `<i class="fa fa-close jp-inline-icon-btn jp-editor-controller jp-cancel-editing-btn"></i>`
-        let template = `<li data-path-key="${ key }" class="jp-tree-li jp-class-${ valueType } ${ relationClass }">${ content }${ copyBtn }${ deleteBtn }${ editBtn }${ doneBtn }${ cancelBtn }</li>`;
+        let cancelBtn = `<i class="fa fa-close jp-inline-icon-btn jp-editor-controller jp-cancel-editing-btn"></i>`;
+        let template = `<li data-path-key="${ key }" class="jp-tree-li jp-class-${ valueType } ${ relationClass } ${ urlClass }">${ content }${ copyBtn }${ deleteBtn }${ searchBtn }${ editBtn }${ doneBtn }${ cancelBtn }</li>`;
         if(child) template += child;
 
         return template;
@@ -199,14 +243,35 @@ export class JSONtoHTML {
                 const editor = new JsonEditor(parent, parentObject);
                 editor.editObject(varName, value, keyElement, valueElement)
                     .then((result) => {
-                        console.log(this.json);
+                        if(isRoot) {
+                            this.json = result.value;
+                        }
                         this.root.innerHTML = this.convertJsonToHtml(null, this.json);
                         this.attachJsonEvents();
                         this.isEditingNode = false;
+
+                        this.root.querySelector('.jp-parent-object > li.jp-tree-li').classList.add('jp-json-root');
                     })
                     .catch(() => {
                         console.log('cancelled');
                         this.isEditingNode = false;
+                    });
+            });
+        });
+
+        this.root.querySelectorAll('.jp-search-btn').forEach((el) => {
+            if (el.getAttribute('jp-click')) return;
+            el.setAttribute('jp-click', true);
+
+            const value = el.parentNode.querySelector('.jp-var-value').textContent;
+
+            el.addEventListener('click', () => {
+                helpers.getLinkType(value)
+                    .then((result) => {
+                        this.displayLinkContent(result);
+                    })
+                    .catch(() => {
+                        this.displayErrorMessage('Could not open url');
                     });
             });
         });

@@ -27,4 +27,7 @@
 
 .jp-editor-value {
     width: 40vw;
+    min-height: 26px;
+    max-height: 400px;
+    box-sizing: border-box;
 }

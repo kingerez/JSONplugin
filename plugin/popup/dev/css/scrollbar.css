@@ -1,0 +1,32 @@
+.scrollbar-container {
+    position: fixed;
+    right: 5px;
+    top: 0px;
+    bottom: 3px;
+    width: 10px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 1px;
+    transition: 150ms;
+}
+
+.scrollbar-container:hover {
+    width: 15px;
+}
+
+.jp-dark-theme .scrollbar-container {
+    border: 1px solid #555555;
+}
+
+.scrollbar-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.jp-dark-theme .scrollbar-bar {
+    background-color: #666666;
+    box-shadow: 1px 3px 5px rgba(0,0,0, 0.3);
+}

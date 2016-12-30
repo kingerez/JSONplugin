@@ -112,7 +112,7 @@
     color: white;
     cursor: pointer;
     display: none !important;
-    margin-left: 10px;
+    margin-left: 0.5em;
     vertical-align: top;
 }
 
@@ -159,4 +159,67 @@ li.jp-tree-li:not(.jp-is-editing):hover i.jp-inline-icon-btn:not(.jp-editor-cont
 
 .jp-dark-theme .jp-is-copying + .jp-ol {
     background-color: rgba(173,216,230, 0.3);
+}
+
+.jp-url .jp-var-value:hover {
+    text-decoration: underline;
+}
+
+.jp-error-alert {
+    position: fixed;
+    top: 20px;
+    right: 0;
+    max-width: 200px;
+    padding: 10px 30px;
+    background-color: black;
+    box-shadow: 1px 2px 3px rgba(0,0,0, 0.3);
+    transition: 250ms;
+    transform: translateX(120%);
+    z-index: 150;
+    color: white;
+    font-family: Roboto, Helvetica, Arial;
+    font-size: 14px;
+    text-align: center;
+}
+
+.jp-error-alert.jp-alert-enter {
+    transform: translateX(-10px);
+}
+
+.jp-alert-fade {
+    opacity: 0;
+}
+
+.jp-link-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0, 0.3);
+    z-index: 200;
+}
+
+.jp-link-preview-inner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #292929;
+    box-shadow: 1px 3px 5px rgba(0,0,0, 0.5);
+    padding: 25px;
+}
+
+.jp-close-preview {
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+}
+
+.jp-preview-image {
+    display: block;
+    max-width: 70vw;
 }

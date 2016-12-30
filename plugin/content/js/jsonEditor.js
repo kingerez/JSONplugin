@@ -1,4 +1,5 @@
 require('../css/jsonEditor.css');
+import { helpers } from './helpers';
 
 export class JsonEditor {
 
@@ -11,8 +12,10 @@ export class JsonEditor {
 
     validateInputs() {
         // if parentObject is undefined, it means that this is the root, and key will always be an empty string
-        this.isValid = !this.parentObject || this.valueInput.value !== '' && this.keyInput.value.trim() !== '';
+        const isRoot = typeof this.parentObject === 'undefined';
+        this.isValid = isRoot || this.valueInput.value !== '' && this.keyInput.value.trim() !== '';
         this.isValid = this.isValid && (this.originalKey === this.keyInput.value || !this.parentObject.hasOwnProperty(this.keyInput.value));
+        this.isValid = this.isValid && (!isRoot || isRoot && helpers.isValidJson(this.valueInput.value));
 
         this.parent.classList[ this.isValid ? 'add' : 'remove' ]('jp-is-valid-value');
     }
@@ -21,7 +24,7 @@ export class JsonEditor {
         this.isValid = true;
         this.originalKey = key;
         this.newValue = typeof value === 'object' ? JSON.stringify(value) : value;
-        if(typeof value === 'string')
+        if(typeof value === 'string' && value.charAt(0) === '"' && value.charAt(value.length-1) === '"')
             this.newValue = this.newValue.substr(1, this.newValue.length-2);
 
         this.oldKeyElement = keyElement;
@@ -47,6 +50,8 @@ export class JsonEditor {
         this.parent.replaceChild(this.keyInput, this.oldKeyElement);
         this.parent.replaceChild(this.valueInput, this.oldValueElement);
 
+        this.valueInput.style.height = this.valueInput.scrollHeight;
+
         return new Promise((resolve, reject) => {
 
             this.parent.querySelector('.jp-cancel-editing-btn').onclick = (e) => {
@@ -55,7 +60,8 @@ export class JsonEditor {
                 if(this.parentObject && this.parentObject.constructor === Array) {
                     this.parentObject.splice(key, 0, value);
                 } else {
-                    this.parentObject[key] = value;
+                    if(this.parentObject)
+                        this.parentObject[key] = value;
                 }
 
                 reject();
@@ -86,7 +92,10 @@ export class JsonEditor {
                 if(this.keyInput.value !== key)
                     delete this.parentObject[key];
 
-                this.parentObject[this.keyInput.value] = newValue;
+                if(this.parentObject)
+                    this.parentObject[this.keyInput.value] = newValue;
+                else
+                    this.parent = newValue;
 
                 resolve({ key: this.keyInput.value, value: newValue });
             };

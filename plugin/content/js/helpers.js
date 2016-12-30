@@ -57,6 +57,49 @@ export const helpers = {
         copyFrom.select();
         document.execCommand('copy');
         body.removeChild(copyFrom);
+    },
+
+    isValidJson(string) {
+        if(typeof string !== 'string') return false;
+
+        try {
+            JSON.parse(string);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
+
+    isValidURL(string) {
+        if(typeof string !== 'string') return false;
+
+        var regexQuery = "^(https?://|//)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$";
+        var url = new RegExp(regexQuery,"i");
+
+        return url.test(string);
+    },
+
+    getLinkType(link) {
+        return new Promise((resolve, reject) => {
+            if(link.charAt(0) === '"')
+                link = link.substr(1);
+            if(link.charAt(link.length-1) === '"')
+                link = link.substr(0, link.length-1);
+
+            if(link.indexOf('//') === 0 && document.location.protocol.indexOf('http') < 0)
+                link = 'http:' + link;
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    xhr.status === 200 && resolve(xhr);
+                    xhr.status !== 200 && reject(xhr);
+                }
+            };
+
+            xhr.open('GET', link, true);
+            xhr.send()
+        });
     }
 
 };

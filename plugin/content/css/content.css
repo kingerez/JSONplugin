@@ -30,8 +30,12 @@ body.is-one-big-json.jp-hide-original.jp-dark-theme {
 }
 
 .jp-top-bar {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     padding: 5px;
+    z-index: 100;
 }
 
 .jp-dark-theme .jp-top-bar {
@@ -76,6 +80,6 @@ body.is-one-big-json.jp-hide-original.jp-dark-theme {
 .jp-body {
     cursor: default;
     padding: 10px;
-    margin: 5px 5px 0 5px;
+    margin: 40px 5px 0 5px;
     font-size: 14px;
 }
