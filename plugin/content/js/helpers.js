@@ -1,3 +1,5 @@
+import { isURL } from 'validator';
+
 export const helpers = {
 
     getType(obj) {
@@ -73,10 +75,12 @@ export const helpers = {
     isValidURL(string) {
         if(typeof string !== 'string') return false;
 
-        var regexQuery = "^(https?://|//)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$";
-        var url = new RegExp(regexQuery,"i");
-
-        return url.test(string);
+        return isURL(string, {
+            allow_underscores: true,
+            allow_trailing_dot: true,
+            allow_protocol_relative_urls: true
+        });
+        return false
     },
 
     getLinkType(link) {
