@@ -26,6 +26,19 @@
     transition: all 500ms;
 }
 
+.popup-top-open-in-window {
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 500ms;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.popup-top-open-in-window.enabled {
+    color: #3CB371;
+}
+
 .popup-top-arrow.disabled {
     color: black;
 }

@@ -13,6 +13,7 @@ export const mainComponent = {
             this.jsonString = undefined;
 
             $rootScope.$on('jsonInputChanged', (event, result) => {
+                this.canOpenInNewWindow = result.isValidJson;
                 if(result.isValidJson) {
                     this.jsonString = result.json;
                 } else {
@@ -64,6 +65,7 @@ export const mainComponent = {
     template: `
         <div class="popup-top">
             <div class="popup-top-back popup-top-arrow" ng-click="$ctrl.clickPrev()" ng-class="{ disabled: !$ctrl.prevArrowState, enabled: $ctrl.prevArrowState }"><i class="fa fa-chevron-left"></i></div>
+            <!--<div class="popup-top-open-in-window" ng-click="$ctrl.openInWindow()" ng-class="{ disabled: !$ctrl.canOpenInNewWindow, enabled: $ctrl.canOpenInNewWindow }"><i class="fa fa-window-restore"></i></div>-->
             <div class="popup-top-next popup-top-arrow" ng-click="$ctrl.clickNext()" ng-class="{ disabled: !$ctrl.nextArrowState, enabled: $ctrl.nextArrowState }"><i class="fa fa-chevron-right"></i></div>
             <div style="clear: both"></div>
         </div>
@@ -79,3 +81,4 @@ export const mainComponent = {
     `
 
 };
+

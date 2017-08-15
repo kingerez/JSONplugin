@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = [{
     context: __dirname + '/plugin/popup',
     entry: __dirname + '/plugin/popup/dev/index.js',
@@ -5,18 +7,17 @@ module.exports = [{
         path: __dirname + '/plugin/popup/compiled/',
         filename: 'bundle.js'
     },
+    target: 'web',
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.js', '.json']
+    },
     module: {
-        loaders: [{
-            test: /\.js$/,
-            exlude: /node_modules/,
-            loader: 'babel',
-            query: { presets: ['es2015'], plugins: ['transform-class-properties'] }
-        }, {
-            test: /\.css$/,
-            exlude: /node_modules/,
-            loader: 'style-loader!css-loader?sourceMap'
-        }]
-    }
+        loaders: [
+            {test: /\.js$/, loaders: ['babel-loader']},
+            {test: /(\.css)$/, loaders: ['style-loader', 'css-loader']}
+        ]
+    },
+    devtool: 'eval-source-map'
 }, {
     context: __dirname + '/plugin/content',
     entry: __dirname + '/plugin/content/js/index.js',
@@ -24,16 +25,15 @@ module.exports = [{
         path: __dirname + '/plugin/content/compiled/',
         filename: 'bundle.js'
     },
+    target: 'web',
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.js', '.json']
+    },
     module: {
-        loaders: [{
-            test: /\.js$/,
-            exlude: /node_modules/,
-            loader: 'babel',
-            query: { presets: ['es2015'], plugins: ['transform-class-properties'] }
-        }, {
-            test: /\.css$/,
-            exlude: /node_modules/,
-            loader: 'style-loader!css-loader?sourceMap'
-        }]
-    }
+        loaders: [
+            {test: /\.js$/, loaders: ['babel-loader']},
+            {test: /(\.css)$/, loaders: ['style-loader', 'css-loader']}
+        ]
+    },
+    devtool: 'eval-source-map'
 }];

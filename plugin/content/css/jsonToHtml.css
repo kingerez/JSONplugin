@@ -28,12 +28,11 @@
     font-size: 1em;
     font-weight: normal;
     font-family: Helvetica, Arial, sans-serif;
-    line-height: 0.93em;
-    max-width: 40vw;
-    white-space: nowrap;
-    overflow: hidden;
+    line-height: 1.3em;
+    max-width: 70vw;
     text-overflow: ellipsis;
     padding-bottom: 1px;
+    vertical-align: top;
 }
 
 .jp-dark-theme .jp-object-type {

@@ -5,17 +5,24 @@ import { singlePageJSON } from './singlePageJSON';
 
 
 // check if the page is only showing a JSON object
-const bodyText = document.body.innerText;
 const theme = 'jp-dark-theme';
 
 document.body.classList.add(theme);
 
-let bodyJSON;
+function checkBodyForJSON() {
+    const bodyText = document.body.innerText;
+    let bodyJSON;
 
-try {
-    bodyJSON = JSON.parse(bodyText);
-} catch (e) {
-    // The text in the body isn't a valid JSON
+    try {
+        bodyJSON = JSON.parse(bodyText);
+    } catch (e) {
+        // The text in the body isn't a valid JSON
+        setTimeout(checkBodyForJSON, 3000);
+    }
+
+    bodyJSON && singlePageJSON.renderPage(bodyText);
 }
 
-bodyJSON && singlePageJSON.renderPage(bodyText);
+checkBodyForJSON();
+
+console.log('asdasd')
